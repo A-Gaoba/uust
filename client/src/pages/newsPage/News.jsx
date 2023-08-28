@@ -1,9 +1,10 @@
 import React, { useContext, useState } from "react";
 import moment from "moment";
 import "moment/locale/en-gb";
-import { NewsContext } from "../../contexts/NewsContext";
-import Pagination from "./Pagination";
-import Loading from "./Loading";
+import { NewsContext } from "../../../contexts/NewsContext";
+import Pagination from "../../components/Pagination";
+import Loading from "../../components/Loading";
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
 
 const NewsPage = () => {
   const { newsItems, isLoading, filteredNewsItems } = useContext(NewsContext);
@@ -28,7 +29,6 @@ const NewsPage = () => {
         <h1 className="text-6xl font-semibold">НОВОСТИ</h1>
       </div>
 
-
       {isLoading ? (
         <Loading />
       ) : (
@@ -36,20 +36,16 @@ const NewsPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 xl:gap-8">
             {currentItems.map((item) => (
               <div
-                key={item.postUrl}
+                key={item.id}
                 className="rounded-lg overflow-hidden shadow-lg bg-white hover:shadow-xl transition-all duration-300"
               >
-                <a
-                  href={item.postUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <Link to={`/news/${item.id}`}>
                   <img
                     src={item.thumbnail}
                     alt={item.title}
                     className="w-full h-48 object-cover object-center"
                   />
-                </a>
+                </Link>
                 <div className="p-4">
                   <h2 className="text-xl font-bold mb-2 text-black">
                     {item.title}
@@ -58,14 +54,12 @@ const NewsPage = () => {
                     <p className="text-gray-400 text-md font-bold mb-4">
                       {moment(item.date).fromNow()}
                     </p>
-                    <a
-                      href={item.postUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <Link
+                      to={`/news/${encodeURIComponent(item.id)}`} // Use Link to navigate
                       className="border border-blue-500 text-blue-500 py-2 px-4 rounded-md hover:bg-blue-500 hover:text-white transition-all duration-200"
                     >
                       Read More
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>

@@ -1,8 +1,17 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import axios from "axios";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { NewsContextProvider } from "../contexts/NewsContext";
 import Navbar from "./components/Navbar";
-import NewsPage from "./components/News";
+import HomePage from "./pages/Home";
+import EventPage from "./pages/Events";
+import AboutUs from "./pages/about/About";
+import InfoPage from "./pages/Info";
+import DocumentsPage from "./pages/Documents";
+import ContactPage from "./pages/Contact";
+import Footer from "./components/Footer";
+import NewsPage from "./pages/newsPage/News";
+import NewsArticle from "./pages/newsPage/NewsArticle ";
 
 const API_BASE_URL = "http://localhost:3000";
 
@@ -54,8 +63,24 @@ const App = () => {
         setFilteredNewsItems,
       }}
     >
-      <Navbar />
-      <NewsPage key={filteredNewsItems.length} />
+      <BrowserRouter>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<HomePage />} exact />
+          <Route
+            path="news"
+            element={<NewsPage key={filteredNewsItems.length} />}
+          />
+          <Route path="news/:id" element={<NewsArticle />} />
+          <Route path="events" element={<EventPage />} />
+          <Route path="about" element={<AboutUs />} />
+          <Route path="informations" element={<InfoPage />} />
+          <Route path="contacts" element={<ContactPage />} />
+          <Route path="documents" element={<DocumentsPage />} />
+          {/* <Route path="*" element={<NoPage />} /> */}
+        </Routes>
+        <Footer />
+      </BrowserRouter>
     </NewsContextProvider>
   );
 };
